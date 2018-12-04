@@ -1,0 +1,15 @@
+Package: JSAM
+Title: rap-around functions to help create a Joint Species Association Model through GRETA
+Version: 0.0.0.9000
+Authors@R: person("Sam", "Perrin", email = "sam.perrin@ntnu.no",
+                  role = c("aut", "cre"))
+Description: This package provides a series of helpful fucntions for the construction and analysis of a joint species distribution model, build to monitor changes in species associations over an environmental gradient.
+Depends: R (>= 3.4.4)
+License: CC BY-SA 4.0
+Encoding: UTF-8
+LazyData: true
+Imports:
+  dplyr,
+  greta,
+  tensorflow
+RoxygenNote: 6.0.1
