@@ -1,8 +1,8 @@
 # 
-library(greta)
-X_newdata <- X_full
- X_assoc_newdata=X_assoc
-site_id_newdata <- as_data(Spatial)
+# library(greta)
+# X_newdata <- X_full
+#  X_assoc_newdata=X_assoc
+# site_id_newdata <- as_data(Spatial)
 
 pred_eta <- function(X_newdata, site_id_newdata = NULL, X_assoc_newdata = NULL) {
   

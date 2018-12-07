@@ -2,18 +2,22 @@
 #### 1. Package loading and data preparation ####
 #    ---------------------------------------    #
 
-install.packages("JSAM")
-
-
-load("./Data/MDB_Data.rda")
-source("./pred_g_ftn.R")
+library(devtools)
+# install_github("samaperrin/JSAM")
+library(JSAM)
 library(greta)
+
+# Note: the below data is not freely available.
+load("./Data/MDB_Data.rda")
+
+# The following script contains several functions which are used to consrtuct the model below.
+source("./pred_g_ftn.R")
 
 
 
 ## Transform objects into greta arrays ##
 
-# Take mini sample of full training set for demo
+# Take mini sample of full training set for demo. This takes 20 sites from each valley.
 demo_sample <- unlist(tapply(1:nrow(MDB_Data$Random1_train), MDB_Data$Random1_train$valley, sample, 20))
 
 X_shared <- as_data(as.matrix(MDB_Data$X_train)[demo_sample,])
@@ -23,6 +27,7 @@ Spatial <- as_data(as.numeric(MDB_Data$Random1_train[demo_sample,1]))
 demo_species_names <- colnames(MDB_Data$Y_train[demo_sample,1:12])
 demo_env_names <- colnames(MDB_Data$X_train)
 
+# The following is our temperature vector, followed by the range of temperatures (listed as deviations from the mean over all sites) for which we want to gauge species associations.
 X_assoc <- X_shared[,2]
 X_assoc_pred <- c(0,1,2)
 
@@ -50,7 +55,7 @@ alpha <- normal(0, 1, dim = n_species)
 # g <- normal(0, 10, dim = c(n_env, n_traits))
 # beta <- g %*% t(traits)
 # Theory for phylogenies
-# Same as above but decompose the phylogenic correlation matrix into coordinates (like you did for dsiitancae sbetween lakes)
+# Same as above but decompose the phylogenic correlation matrix into coordinates
 
 beta_shared <- normal(0, 10, dim = c(n_env_shared, n_species))
 
@@ -114,20 +119,19 @@ plot(calculate(R_lower,demo_draws_extra))
 plot(calculate(p[1:12,],demo_draws_extra))
 
 # Rhat and effective size checks
+# Rhat values should be below 1.1, effective size ideally over 1000.
 coda::gelman.diag(calculate(R_lower,demo_draws_extra),multivariate = FALSE)
 summary(coda::effectiveSize(calculate(R_lower,demo_draws_extra)))
 
 ### Analyse output
 
-
-get_beta_list(demo_draws_extra,beta_shared,beta_ssv,species_names=demo_species_names,env_names=demo_env_names,ssv=TRUE)
+beta_list <- get_beta_list(demo_draws_extra,beta_shared,beta_ssv,species_names=demo_species_names,env_names=demo_env_names,ssv=TRUE)
 
 demo_cooccurrence <- get_cooc_ints(demo_draws_extra,demo_species_names)
 
 
 # Look at changes in species associations
 # Vector as defined in first section gives an increase of 0, 1 and 2 standard deviations in temperature
-
 
 par(mfrow=c(1,1))
 demo_correlation_temp <- pred_correlation(demo_draws_extra,X_assoc_pred,demo_species_names)
