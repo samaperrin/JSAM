@@ -1,5 +1,5 @@
 ---
-title: "README"
+title: "Joint Species Association Model Runthrough"
 author: "Sam Perrin"
 date: "February 8, 2019"
 output: html_document
@@ -9,22 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+Whilst I hope to eventually have a full markdown document available to take you through this package, for the moment you'll have to make to with the "JSAM_Walkthrough.R" script you can find in the main repository.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Please note that the MDB_Data file is not freely available, though you can email me to request it. I should have a simulation file up shortly to allow you to simulate date for use.
