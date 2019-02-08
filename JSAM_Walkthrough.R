@@ -142,6 +142,21 @@ corrplot(demo_correlation_temp[[2]], method = "color",type="lower",
 corrplot(demo_correlation_temp[[3]], method = "color",type="lower",
          col = colorRampPalette(c("blue", "white", "red"))(200),order="original")
 
+
+# Now, in the case of small association values which are difficult to pinpoint, we use the accentuate function to make them more obvious when plotted.
+demo_acc <- accentuate(demo_correlation_temp)
+
+# We can also narrow down to just observe certain species
+focal_species <- c("Common_carp","Redfin_perch","Spangled_perch", "Brown_trout", "Golden_perch")
+demo_acc_narr <- narrowing(demo_acc$accentuated, focal_species)
+
+# Now we create a matrix which allows us to observe the changes in species associations between one focal species (here the Golden Perch) over the temperature gradient given.
+perch_assoc_grad <- create_association_gradient(demo_acc_narr,"Golden_perch")
+
+# And then plot this matrix.
+plot_change_asc(perch_assoc_grad)
+
+
 ### Calculating deviance
 
 # Now we look at deviance
@@ -189,3 +204,7 @@ conditional_p_value <- pred_cond(demo_betas_shared,demo_betas_ssv,site_env=site_
 # Predict conditional probability of one species (given others) at range of sites
 
 conditional_entire_value <- pred_cond_entire(demo_draws,demo_mean_betas_shared,demo_mean_betas_ssv,site_matrix=as.matrix(MDB_Data$X_train)[demo_sample,],occupancy_matrix=as.matrix(MDB_Data$Y_train)[demo_sample,1:12],temp_vector = as.matrix(MDB_Data$X_train)[demo_sample,2],focal_species=4)
+
+
+
+
