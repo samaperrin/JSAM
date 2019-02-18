@@ -4,9 +4,9 @@
 #  X_assoc_newdata=X_assoc
 # site_id_newdata <- as_data(Spatial)
 
-pred_eta <- function(X_newdata, site_id_newdata = NULL, X_assoc_newdata = NULL) {
+pred_eta <- function(X_newdata, site_id_newdata = NULL, X_assoc_newdata = NULL,alpha=alpha,beta=beta) {
   
-  eta <- pred_env(X_newdata)
+  eta <- pred_env(X_newdata,alpha,beta)
   
   if (!is.null(site_id_newdata)) {
     eta <- eta + pred_site(site_id_newdata)
@@ -22,7 +22,7 @@ pred_eta <- function(X_newdata, site_id_newdata = NULL, X_assoc_newdata = NULL) 
 # pred()
 
 
-pred_env <- function(X_newdata) {
+pred_env <- function(X_newdata,alpha,beta) {
   XB <- X_newdata %*% beta
   eta <- sweep(XB, 2, alpha, "+")
   return(eta)
@@ -54,7 +54,7 @@ pred_assoc <- function(X_assoc) {
 #X_assoc_pred <- X_assoc_pred[1,]
 # lambda_int <- create_lambda(n_species,n_latent)
 
-pred_one_R <- function(X_assoc_pred = NULL, lower_only = FALSE, lambda_int){
+pred_one_R <- function(X_assoc_pred = NULL, lower_only = FALSE, lambda_int, lambda_coef){
   
   lambda <- lambda_int
   if (!is.null(X_assoc_pred)) {
@@ -74,7 +74,11 @@ pred_one_R <- function(X_assoc_pred = NULL, lower_only = FALSE, lambda_int){
 
 # This SHOULD give us our new R matrix, but it needs work. new versioN
 
-pred_R <- function(X_assoc_pred, lower_only = FALSE, lambda_int) {
+#X_assoc_pred <- X_assoc_pred_sim
+#lambda_int=lambda_true_int
+
+
+pred_R <- function(X_assoc_pred, lower_only = FALSE, lambda_int, lambda_coef) {
 
   if (!inherits(X_assoc_pred, "greta_array")) {
     X_assoc_pred <- as.matrix(X_assoc_pred)
@@ -85,9 +89,9 @@ pred_R <- function(X_assoc_pred, lower_only = FALSE, lambda_int) {
   result <- list()
   
   for (i in seq_len(n)) {
-    result[[i]] <- pred_one_R(X_assoc_pred[i, ], lower_only = lower_only, lambda_int)
+    result[[i]] <- pred_one_R(X_assoc_pred[i, ], lower_only = lower_only, lambda_int, lambda_coef)
   }
   
-  result
+  return(result)
   
 }

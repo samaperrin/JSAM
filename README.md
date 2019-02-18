@@ -5,9 +5,6 @@ date: "February 8, 2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 Whilst I hope to eventually have a full markdown document available to take you through this package, for the moment you'll have to make to with the "JSAM_Walkthrough.R" script you can find in the main repository.
 
